@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import useBreedList from "./useBreedList";
+import Results from "./Results.js";
 import Pet from "./Pet";
 
-const ANIMALS = ["Bird", "Cat", "Dog", "Rabit", "Reptile"];
+const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
 
 const SearchParams = () => {
   const [location, setLocation] = useState("Seattle, WA");
@@ -12,10 +13,10 @@ const SearchParams = () => {
   const [breeds] = useBreedList(animal);
 
   useEffect(() => {
-    requesPets();
+    requestPets();
   }, []); //eslint-disable-line react-hooks/exhaustive deps
 
-  async function requesPets() {
+  async function requestPets() {
     const res = await fetch(
       `https://pets-v2.dev-apis.com/pets?animal=${animal}&location=${location}&breed=${breed}`
     );
@@ -28,7 +29,12 @@ const SearchParams = () => {
 
   return (
     <div className="search-params">
-      <form>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          requestPets();
+        }}
+      >
         <label htmlFor="location">
           Location
           <input
@@ -75,20 +81,15 @@ const SearchParams = () => {
         </label>
         <button> Submit </button>
       </form>
-      {
-        pets.map(pet => (
-          <Pet name={pet.name} animal={pet.animal} breed={pet.breed} key={pet.id} />
-        ))
-      }
+
+      <Results pets={pets} />
     </div>
   );
 };
 
 export default SearchParams;
 
-
-
-//Comments 
+//Comments
 
 // useEffect(() => {
 //   const timer = setTimeout(() => alert('hi'), 3000);
