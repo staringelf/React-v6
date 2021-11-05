@@ -24,6 +24,9 @@ class Details extends Component {
   }
 
   render() {
+
+    throw new Error("Hey!");
+
     if (this.state.loading === true) {
       return <h2>loading...</h2>;
     }
