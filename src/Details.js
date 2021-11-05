@@ -2,6 +2,7 @@ import { Component } from "react";
 import { withRouter } from "react-router-dom";
 import Carousel from "./Carousel.js";
 import ErrorBoundary from "./ErrorBoundary.js";
+import ThemeContext from "./ThemeContext.js";
 
 class Details extends Component {
   state = { loading: true };
@@ -25,8 +26,6 @@ class Details extends Component {
 
   render() {
 
-    throw new Error("Hey!");
-
     if (this.state.loading === true) {
       return <h2>loading...</h2>;
     }
@@ -42,7 +41,11 @@ class Details extends Component {
           <h2>
             {animal} - {breed} - {city} - {state}
           </h2>
-          <button>Adopt {name}</button>
+          <ThemeContext.Consumer>
+            {([theme]) => (
+              <button style={{ backgroundColor: theme }}>Adopt {name}</button>
+            )}
+          </ThemeContext.Consumer>
           <p>{description}</p>
         </div>
       </div>
